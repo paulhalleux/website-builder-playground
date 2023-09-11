@@ -1,0 +1,13 @@
+.plugins-sidebar {
+  max-width: 348px;
+  width: 100%;
+  height: 100%;
+
+  &--left-sidebar {
+    border-right: 1px solid var(--color-border);
+  }
+
+  &--right-sidebar {
+    border-left: 1px solid var(--color-border);
+  }
+}

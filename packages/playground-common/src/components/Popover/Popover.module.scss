@@ -1,0 +1,34 @@
+.popover__wrapper {
+  position: relative;
+  width: max-content;
+}
+
+.popover__container {
+  position: absolute;
+  z-index: 3;
+  width: max-content;
+
+  outline: none;
+
+  &.popover--top {
+    padding-bottom: var(--offset);
+  }
+
+  &.popover--bottom {
+    padding-top: var(--offset);
+  }
+
+  &.popover--left {
+    padding-right: var(--offset);
+  }
+
+  &.popover--right {
+    padding-left: var(--offset);
+  }
+}
+
+.popover__children {
+  position: relative;
+  width: max-content;
+  z-index: 1;
+}

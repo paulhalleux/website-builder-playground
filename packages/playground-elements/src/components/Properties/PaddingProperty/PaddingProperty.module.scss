@@ -1,0 +1,16 @@
+.padding {
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.padding__container {
+  display: flex;
+  flex-wrap: wrap;
+  grid-gap: 8px;
+  flex-grow: 1;
+}
+
+.input {
+  width: calc(50% - 4px);
+}

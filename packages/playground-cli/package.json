@@ -1,0 +1,43 @@
+{
+  "name": "@playground/cli",
+  "version": "1.1.4",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "bin": {
+    "playground": "dist/index.js"
+  },
+  "scripts": {
+    "build": "webpack --mode=production",
+    "build:watch": "webpack --watch",
+    "build:pre": "yarn build && npm link --force"
+  },
+  "peerDependencies": {
+    "@types/mdast": "^4.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.22.17",
+    "@babel/preset-env": "^7.22.15",
+    "@types/fs-extra": "^11.0.1",
+    "@types/node": "^20.6.0",
+    "@types/react": "^18.2.21",
+    "@types/yargs": "^17.0.23",
+    "raw-loader": "^4.0.2",
+    "ts-loader": "^9.4.4",
+    "typescript": "^5.0.2",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "@mdx-js/mdx": "^2.3.0",
+    "fast-glob": "^3.3.1",
+    "fs-extra": "^11.1.1",
+    "liquidjs": "^10.8.4",
+    "prettier": "^3.0.2",
+    "rimraf": "^5.0.1",
+    "yargs": "^17.7.1"
+  }
+}

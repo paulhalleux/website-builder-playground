@@ -1,0 +1,1 @@
+export { StringProperty } from "./StringProperty";

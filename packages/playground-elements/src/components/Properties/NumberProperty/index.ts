@@ -1,0 +1,1 @@
+export { NumberProperty } from "./NumberProperty";

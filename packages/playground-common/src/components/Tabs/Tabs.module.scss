@@ -1,0 +1,50 @@
+.tabs__container {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-background);
+}
+
+.tabs__list {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+
+  padding: 0 12px;
+  width: 100%;
+  height: 32px;
+
+  border-bottom: 1px solid var(--color-border);
+}
+
+.tabs__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+
+  color: var(--color-text-secondary);
+  background: transparent;
+  border: none;
+
+  font-size: var(--font-size-small);
+  font-weight: 600;
+  cursor: pointer;
+  overflow: hidden;
+
+  &--selected,
+  &:hover {
+    color: var(--color-text);
+  }
+
+  &:focus-visible {
+    outline: 1px solid var(--color-primary) !important;
+    z-index: 1;
+  }
+}
+
+.tabs__content {
+  flex: 1;
+  overflow: auto;
+}

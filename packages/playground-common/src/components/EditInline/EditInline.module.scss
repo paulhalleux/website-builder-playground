@@ -1,0 +1,15 @@
+.edit {
+  width: 100%;
+  user-select: none;
+}
+
+.edit__input {
+  width: 100%;
+  font-size: inherit;
+  background: transparent;
+  border: none;
+  color: currentColor;
+  border-radius: 2px;
+  height: 20px;
+  outline: none;
+}

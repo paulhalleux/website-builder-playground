@@ -1,0 +1,69 @@
+.tree {
+  display: flex;
+  flex-direction: column;
+  width: max-content;
+  min-width: 100%;
+}
+
+.tree__item {
+  width: 100%;
+  display: flex;
+  cursor: pointer;
+  user-select: none;
+  font-size: var(--font-size-small);
+
+  padding-left: calc(24px * var(--level));
+
+  &:hover {
+    background-color: var(--color-background-secondary);
+  }
+
+  &--selected {
+    background-color: var(--color-background-tertiary) !important;
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: inset 0 0 0 1px var(--color-primary);
+  }
+}
+
+.tree__item__children {
+  display: flex;
+  flex-direction: column;
+}
+
+.tree__item__icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
+}
+
+.expand__container {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+
+  .tree__item__toggle {
+    width: 32px;
+    height: 32px;
+    border-radius: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+}
+
+.tree__button {
+  width: 100%;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding-right: 8px;
+  white-space: nowrap;
+}

@@ -1,0 +1,66 @@
+module.exports = {
+  extends: [
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "plugin:prettier/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:import/warnings",
+  ],
+  parser: "@typescript-eslint/parser",
+  plugins: [
+    "react",
+    "@typescript-eslint",
+    "react-hooks",
+    "prettier",
+    "simple-import-sort",
+  ],
+  rules: {
+    camelcase: "error",
+    "no-duplicate-imports": "error",
+    "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/ban-types": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "react/react-in-jsx-scope": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "react/prop-types": 0,
+    "react/display-name": 0,
+    "@typescript-eslint/no-empty-function": "off",
+    "react/no-unknown-property": "off",
+    "react/no-unescaped-entities ": "off",
+    "react/require-default-props": [
+      "warn",
+      { ignoreFunctionalComponents: true },
+    ],
+    "react/jsx-filename-extension": [1, { extensions: [".tsx", ".jsx"] }],
+    "no-use-before-define": "off",
+    "import/prefer-default-export": "off",
+    "func-names": "off",
+    "simple-import-sort/imports": [
+      "error",
+      {
+        groups: [
+          [
+            "^(assert|buffer|child_process|cluster|console|constants|crypto|dgram|dns|domain|events|fs|http|https|module|net|os|path|punycode|querystring|readline|repl|stream|string_decoder|sys|timers|tls|tty|url|util|vm|zlib|freelist|v8|process|async_hooks|http2|perf_hooks)(/.*|$)",
+          ],
+          ["^react", "^@?\\w"],
+          ["^(@|@company|@ui|components|utils|config|vendored-lib)(/.*|$)"],
+          ["^\\u0000"],
+          ["^\\.\\.(?!/?$)", "^\\.\\./?$"],
+          ["^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"],
+          ["^.+\\.s?css$"],
+        ],
+      },
+    ],
+    "max-len": [
+      "error",
+      {
+        code: 150,
+        ignoreComments: true,
+        ignoreStrings: true,
+        ignoreTemplateLiterals: true,
+        ignoreRegExpLiterals: true,
+      },
+    ],
+  },
+};

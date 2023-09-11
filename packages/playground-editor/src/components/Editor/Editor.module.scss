@@ -1,0 +1,30 @@
+.editor__container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.editor__toolbar {
+  background: var(--color-background);
+  border-bottom: 1px solid var(--color-border);
+
+  height: 48px;
+
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px 1px 12px;
+}
+
+.editor {
+  display: flex;
+  overflow: hidden;
+  height: 100%;
+}
+
+.editor__toolbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

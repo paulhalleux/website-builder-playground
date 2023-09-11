@@ -1,0 +1,43 @@
+.context-menu {
+  min-width: 160px;
+  width: max-content;
+  padding: 4px 0;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-background);
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.context-menu__item {
+  height: 28px;
+  width: 100%;
+
+  padding: 0 12px;
+  border-radius: 0;
+
+  border: none;
+  background: var(--color-background);
+  font-size: var(--font-size-small);
+
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  cursor: pointer;
+
+  &:hover {
+    background: var(--color-background-secondary);
+  }
+
+  &:active {
+    background: var(--color-background-tertiary);
+  }
+
+  &:focus-visible {
+    outline: 1px solid var(--color-primary);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+}
