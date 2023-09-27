@@ -1,23 +1,11 @@
-import {
-  Field,
-  Input,
-  PropertyDefinition,
-  PropertyType,
-} from "@playground/common";
-
-type StringPropertyProps = {
-  definition: PropertyDefinition;
-  name: string;
-  value: string;
-  onChange: (value: string) => void;
-};
+import { Field, Input, PropertyProps, PropertyType } from "@playground/common";
 
 export function StringProperty({
   definition,
   name,
   value = "",
   onChange,
-}: StringPropertyProps) {
+}: PropertyProps<string>) {
   return (
     <Field label={definition.label} htmlFor={name}>
       <Input

@@ -4,7 +4,7 @@ import {
   Field,
   Icon,
   Input,
-  PropertyDefinition,
+  PropertyProps,
   PropertyType,
 } from "@playground/common";
 
@@ -17,19 +17,12 @@ export type Padding = {
   left: number;
 };
 
-type PaddingPropertyProps = {
-  definition: PropertyDefinition;
-  name: string;
-  value: Padding;
-  onChange: (value: Padding) => void;
-};
-
 export function PaddingProperty({
   definition,
   name,
   value = { top: 0, right: 0, bottom: 0, left: 0 },
   onChange,
-}: PaddingPropertyProps) {
+}: PropertyProps<Padding>) {
   const [uniform, setUniform] = React.useState(
     value.top === value.bottom && value.left === value.right,
   );

@@ -21,11 +21,19 @@
   user-select: none;
   position: relative;
 
-  &.hovered {
+  &::before {
+    content: '';
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+  }
+
+  &.hovered:before {
     box-shadow: inset 0 0 0 1px var(--color-primary-alpha-dark);
   }
 
-  &.selected {
+  &.selected:before {
     box-shadow: inset 0 0 0 1px var(--color-primary);
   }
 }

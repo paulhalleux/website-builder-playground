@@ -1,16 +1,10 @@
-import { Input, PropertyDefinition, PropertyType } from "@playground/common";
-
-type NumberPropertyProps = {
-  definition: PropertyDefinition;
-  value: number;
-  onChange: (value: number) => void;
-};
+import { Input, PropertyProps, PropertyType } from "@playground/common";
 
 export function NumberProperty({
   definition,
   value,
   onChange,
-}: NumberPropertyProps) {
+}: PropertyProps<number>) {
   return (
     <Input
       label={definition.label}

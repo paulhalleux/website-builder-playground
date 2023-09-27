@@ -3,6 +3,8 @@ import { EditorPluginSectionProps, Field, Input } from "@playground/common";
 import { usePagesActions } from "../../../hooks/usePagesActions";
 import { Properties } from "../Properties";
 
+import styles from "./PageProperties.module.scss";
+
 export function PageProperties({
   editor: { selection },
 }: EditorPluginSectionProps) {
@@ -13,7 +15,7 @@ export function PageProperties({
   if (!selectedPage) return null;
 
   return (
-    <Properties>
+    <Properties className={styles.properties}>
       <Field label="Name" htmlFor="page-name" orientation="horizontal">
         <Input
           id="page-name"
