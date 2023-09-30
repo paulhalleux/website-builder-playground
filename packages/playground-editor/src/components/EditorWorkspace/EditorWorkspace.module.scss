@@ -11,9 +11,12 @@
 
 .editor__workspace {
   width: 100%;
-  min-height: 50px;
   background-color: var(--color-background);
   border: 1px solid var(--color-border);
+
+  &--empty {
+    min-height: 50px;
+  }
 }
 
 .editor__workspace__layer {
@@ -84,6 +87,7 @@
 
     &:before {
       height: 50px;
+      top: 0;
     }
   }
 }

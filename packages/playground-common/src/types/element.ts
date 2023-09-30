@@ -11,10 +11,6 @@ export type ElementProps<T, P = {}> = {
   children: React.ReactNode;
 } & P;
 
-export type ElementProperties<T> = {
-  [key in keyof T]: PropertyDefinition<T[key]>;
-};
-
 export type Element<T> = {
   name: string;
   displayName: string;
@@ -23,5 +19,5 @@ export type Element<T> = {
   applicable?: (page: Page) => boolean;
   acceptChildren: boolean | string[];
   component: React.FC<ElementProps<T>>;
-  properties: ElementProperties<T>;
+  properties: PropertyDefinition<T[keyof T]>[];
 };

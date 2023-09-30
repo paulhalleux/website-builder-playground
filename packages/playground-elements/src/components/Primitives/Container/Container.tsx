@@ -58,13 +58,15 @@ export const ContainerElement: Element<ContainerElementProperties> = {
   icon: "layers",
   acceptChildren: true,
   component: Container,
-  properties: {
-    backgroundColor: {
+  properties: [
+    {
+      name: "backgroundColor",
       label: "Background color",
       type: PropertyType.String,
       defaultValue: "#ffffff",
     },
-    padding: {
+    {
+      name: "padding",
       label: "Padding",
       type: PropertyType.Padding,
       defaultValue: {
@@ -74,12 +76,13 @@ export const ContainerElement: Element<ContainerElementProperties> = {
         left: 0,
       },
     },
-    display: {
+    {
+      name: "display",
       label: "Display",
       type: PropertyType.Display,
       defaultValue: {
         type: DisplayType.Block,
       },
     },
-  },
+  ],
 };

@@ -24,5 +24,5 @@ export const LayoutContentElement: Element<{}> = {
       (layer) => layer.type === ElementType.LayoutContent,
     ),
   component: LayoutContent,
-  properties: {},
+  properties: [],
 };

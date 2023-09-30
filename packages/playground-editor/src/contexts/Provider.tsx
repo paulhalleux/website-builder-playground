@@ -15,18 +15,9 @@ type ProviderProps = PropsWithChildren<
   EditorProviderProps & SelectionProviderProps
 >;
 
-export function Provider({
-  plugins,
-  onChange,
-  defaultValue,
-  children,
-}: ProviderProps) {
+export function Provider({ plugins, project, children }: ProviderProps) {
   return (
-    <EditorProvider
-      defaultValue={defaultValue}
-      onChange={onChange}
-      plugins={plugins}
-    >
+    <EditorProvider project={project} plugins={plugins}>
       <SelectionProvider>{children}</SelectionProvider>
     </EditorProvider>
   );

@@ -2,15 +2,15 @@ import { PropsWithChildren } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { Preview, PreviewGenerator } from "react-dnd-preview";
+import { useParams } from "react-router";
 import { Button, Plugin, PluginPosition } from "@playground/common";
 
 import { Provider } from "../../contexts";
 import { defaultPlugins } from "../../plugins";
 import { DraggableComponent } from "../../plugins/ComponentsPlugin/DraggableComponent";
 import { DragItemType } from "../../types/dnd";
-import { EditorWorkspace, Logo, PluginsSidebar } from "../";
-
-import { editorValue } from "./value";
+import { Header } from "../Header";
+import { EditorWorkspace, PluginsSidebar } from "../";
 
 import styles from "./Editor.module.scss";
 
@@ -19,25 +19,26 @@ type EditorProps = PropsWithChildren<{
 }>;
 
 export function Editor({ plugins }: EditorProps) {
+  const { id } = useParams<{ id: string }>();
+
+  if (!id) return null;
+
   const editorPlugins = [...defaultPlugins, ...(plugins || [])];
   return (
     <DndProvider backend={HTML5Backend}>
-      <Provider plugins={editorPlugins} defaultValue={editorValue}>
+      <Provider plugins={editorPlugins} project={id}>
         <section className={styles.editor__container}>
-          <header className={styles.editor__toolbar}>
-            <Logo />
-            <div className={styles.editor__toolbar__actions}>
-              <Button.Icon
-                icon="play-circle"
-                size="x-large"
-                onClick={() => {
-                  window.open("/preview", "_blank");
-                }}
-              />
-              <Button.Icon icon="download" size="x-large" />
-              <Button>Export</Button>
-            </div>
-          </header>
+          <Header>
+            <Button.Icon
+              icon="play-circle"
+              size="x-large"
+              onClick={() => {
+                window.open(`/preview/${id}`, "_blank");
+              }}
+            />
+            <Button.Icon icon="download" size="x-large" />
+            <Button>Export</Button>
+          </Header>
           <main className={styles.editor}>
             <PluginsSidebar position={PluginPosition.LeftSidebar} />
             <EditorWorkspace />

@@ -17,6 +17,7 @@ export type Page = {
 };
 
 export type Website = {
+  id: string;
   name: string;
   content: Page[];
 };

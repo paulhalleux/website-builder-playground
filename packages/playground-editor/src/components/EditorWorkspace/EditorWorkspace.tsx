@@ -1,4 +1,5 @@
 import React from "react";
+import { clsx } from "clsx";
 
 import { useEditor } from "../../contexts";
 import { Toolbar } from "../Toolbar";
@@ -27,7 +28,12 @@ export function EditorWorkspace() {
       <Toolbar />
       <div className={styles.page__container}>
         {selectedPage && (
-          <div className={styles.editor__workspace}>
+          <div
+            className={clsx(styles.editor__workspace, {
+              [styles["editor__workspace--empty"]]:
+                selectedPage.layers.length === 0,
+            })}
+          >
             {selectedPage.layers.length === 0 && <WorkspaceDropzone empty />}
             {selectedPage.layers
               .sort((a, b) => a.order - b.order)

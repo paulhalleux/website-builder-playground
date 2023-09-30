@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { SetStateAction, useCallback, useMemo } from "react";
 import {
   EditorContextType,
   Plugin,
@@ -14,32 +14,49 @@ export const EditorContext = React.createContext<EditorContextType>(
 
 export type EditorProviderProps = React.PropsWithChildren<{
   plugins?: Plugin[];
-  onChange?: (value: Website) => void;
-  defaultValue: Website;
+  project: string;
 }>;
 
 export function EditorProvider({
   children,
   plugins,
-  onChange,
-  defaultValue,
+  project: projectId,
 }: EditorProviderProps) {
-  const [value, setValue] = useStoreState("editor-value", defaultValue);
-
-  const onValueChange = useCallback(
-    (value: ((prev: Website) => Website) | Website) => {
-      setValue(value);
-      onChange?.(typeof value === "function" ? value(defaultValue) : value);
-    },
-    [setValue, onChange],
+  const [projects, setProjects] = useStoreState<Website[]>(
+    "editor-projects",
+    [],
   );
+
+  const project = useMemo(
+    () => projects.find((project) => project.id === projectId),
+    [projects, projectId],
+  );
+
+  const setValue = useCallback(
+    (value: SetStateAction<Website>) => {
+      setProjects((projects) =>
+        projects.map((project) =>
+          project.id === projectId
+            ? typeof value === "function"
+              ? value(project)
+              : value
+            : project,
+        ),
+      );
+    },
+    [projectId, setProjects],
+  );
+
+  if (!project) {
+    return null;
+  }
 
   return (
     <EditorContext.Provider
       value={{
         plugins: plugins || defaultPlugins,
-        value,
-        onChange: onValueChange,
+        value: project,
+        onChange: setValue,
       }}
     >
       {children}

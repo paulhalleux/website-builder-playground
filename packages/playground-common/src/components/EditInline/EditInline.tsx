@@ -11,6 +11,7 @@ export type EditInlineProps = {
   inputClassName?: string;
   onStartEditing?: () => void;
   onStopEditing?: () => void;
+  className?: string;
 };
 
 export function EditInline({
@@ -20,6 +21,7 @@ export function EditInline({
   inputClassName,
   onStartEditing,
   onStopEditing,
+  className,
 }: EditInlineProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -91,7 +93,7 @@ export function EditInline({
         />
       ) : (
         <span
-          className={styles.edit__value}
+          className={clsx(styles.edit__value, className)}
           onDoubleClick={onDoubleClick}
           onClick={onClick}
         >

@@ -8,6 +8,7 @@ export enum PropertyType {
 }
 
 export type PropertyDefinition<T> = {
+  name: string;
   label: string;
   type: PropertyType;
   defaultValue?: T;

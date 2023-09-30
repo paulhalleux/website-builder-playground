@@ -2,10 +2,7 @@ import { EditorPluginSectionProps } from "@playground/common";
 
 import { useLayersActions } from "../../../hooks/useLayersActions";
 import { getLayerElement } from "../../../utils/layers";
-import {
-  getPropertyComponent,
-  getPropertyDefinition,
-} from "../../../utils/properties";
+import { getPropertyComponent } from "../../../utils/properties";
 import { Properties } from "../Properties";
 
 import styles from "./LayerProperties.module.scss";
@@ -29,11 +26,7 @@ export function LayerProperties({
 
   return (
     <Properties className={styles.properties}>
-      {Object.keys(selectedLayerElement.properties).map((key) => {
-        const propertyDefinition = getPropertyDefinition(
-          selectedLayerElement.properties,
-          key,
-        );
+      {selectedLayerElement.properties.map((propertyDefinition) => {
         const PropertyComponent = getPropertyComponent(propertyDefinition.type);
 
         if (!PropertyComponent) {
@@ -41,18 +34,18 @@ export function LayerProperties({
         }
 
         return (
-          <div className={styles.property} key={key}>
+          <div className={styles.property} key={propertyDefinition.name}>
             <PropertyComponent
-              name={key}
+              name={propertyDefinition.name}
               value={
-                (selectedLayer.properties[key] ||
+                (selectedLayer.properties[propertyDefinition.name] ||
                   propertyDefinition.defaultValue) as never
               }
               onChange={(value) => {
                 updateLayer(selectedLayer.id, {
                   properties: {
                     ...selectedLayer.properties,
-                    [key]: value,
+                    [propertyDefinition.name]: value,
                   },
                 });
               }}
