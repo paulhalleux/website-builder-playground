@@ -40,7 +40,6 @@ export function Container({ children, properties }: ContainerProps) {
   return (
     <div
       style={{
-        height: 300,
         backgroundColor: properties.backgroundColor,
         padding: `${properties.padding?.top}px ${properties.padding?.right}px ${properties.padding?.bottom}px ${properties.padding?.left}px`,
         display: properties.display?.type,
@@ -56,6 +55,7 @@ export const ContainerElement: Element<ContainerElementProperties> = {
   name: ElementType.Container,
   acceptChildren: true,
   component: Container,
+  icon: "layers",
   properties: {
     backgroundColor: {
       label: "Background color",

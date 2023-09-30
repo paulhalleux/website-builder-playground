@@ -5,13 +5,22 @@ import { clsx } from "clsx";
 
 import { useEditor } from "../../contexts";
 
+import { useWorkspaceElementDrop } from "./useWorkspaceElementDrop";
+import { WorkspaceDropzone } from "./WorkspaceDropzone";
+
 import styles from "./EditorWorkspace.module.scss";
 
 type RenderElementProps = {
   layer: Layer;
+  dragOver?: string;
+  onDragOver: (id?: string) => void;
 };
 
-export function RenderElement({ layer }: RenderElementProps) {
+export function RenderElement({
+  layer,
+  dragOver,
+  onDragOver,
+}: RenderElementProps) {
   const {
     selection: {
       selectedLayerId,
@@ -20,6 +29,8 @@ export function RenderElement({ layer }: RenderElementProps) {
       setHoveredLayer,
     },
   } = useEditor();
+
+  const { drop, canDrop } = useWorkspaceElementDrop(layer);
 
   const element = Object.values(Elements).find(
     (value) => value.name === layer.type,
@@ -40,39 +51,58 @@ export function RenderElement({ layer }: RenderElementProps) {
   };
 
   const selected = layer.id === selectedLayerId;
-  return (
-    <div
-      onClick={onClick}
-      onMouseOver={onMouseOver}
-      onMouseOut={onMouseOut}
-      className={clsx(styles.editor__workspace__layer, {
-        [styles.selected]: selected,
-        [styles.hovered]: layer.id === hoveredLayerId,
-      })}
-    >
-      {selected && (
-        <div className={styles.editor__workspace__layer__label}>
-          {layer.name}
-        </div>
-      )}
-      {element ? (
-        <element.component properties={layer.properties as any}>
-          {element.acceptChildren !== undefined &&
-            layer.children
-              .sort((a, b) => a.order - b.order)
-              .map((child) => {
-                if (
-                  typeof element.acceptChildren !== "boolean" &&
-                  !element.acceptChildren.includes(child.type)
-                )
-                  return null;
+  const isDragOver = dragOver === layer.id;
 
-                return <RenderElement key={child.id} layer={child} />;
-              })}
-        </element.component>
-      ) : (
-        <span>{layer.type} not found</span>
-      )}
-    </div>
+  return (
+    <>
+      <div
+        ref={drop}
+        onClick={onClick}
+        onMouseOver={onMouseOver}
+        onMouseOut={onMouseOut}
+        onDragEnter={(event) => {
+          event.stopPropagation();
+          onDragOver(layer.id);
+        }}
+        onDragExit={() => onDragOver(undefined)}
+        className={clsx(styles.editor__workspace__layer, {
+          [styles.selected]: selected && !isDragOver,
+          [styles.hovered]: layer.id === hoveredLayerId,
+          [styles.over]: isDragOver && canDrop,
+        })}
+      >
+        {selected && (
+          <div className={styles.editor__workspace__layer__label}>
+            {layer.name}
+          </div>
+        )}
+        {element ? (
+          <element.component properties={layer.properties as any}>
+            {element.acceptChildren !== undefined &&
+              layer.children
+                .sort((a, b) => a.order - b.order)
+                .map((child) => {
+                  if (
+                    typeof element.acceptChildren !== "boolean" &&
+                    !element.acceptChildren.includes(child.type)
+                  )
+                    return null;
+
+                  return (
+                    <RenderElement
+                      key={child.id}
+                      layer={child}
+                      dragOver={dragOver}
+                      onDragOver={onDragOver}
+                    />
+                  );
+                })}
+          </element.component>
+        ) : (
+          <span>{layer.type} not found</span>
+        )}
+      </div>
+      <WorkspaceDropzone />
+    </>
   );
 }

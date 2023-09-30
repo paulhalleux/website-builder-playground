@@ -8,6 +8,7 @@ import {
 import { ElementTree } from "../../../components/ElementTree";
 import { ElementTreeItem } from "../../../components/ElementTree/ElementTree";
 import { useLayersActions } from "../../../hooks/useLayersActions";
+import { getLayerElement } from "../../../utils/layers";
 
 export function LayersSection({ editor }: EditorPluginSectionProps) {
   const { updateLayer, removeLayer } = useLayersActions();
@@ -59,12 +60,22 @@ const getLayerItems = (
 ): ElementTreeItem<Layer>[] => {
   return layers
     .sort((a, b) => a.order - b.order)
-    .map((layer) => ({
-      id: layer.id,
-      label: layer.name,
-      icon: "box",
-      onChange: (name: string) => rename?.(layer.id, name),
-      children: getLayerItems(layer.children, rename),
-      data: layer,
-    }));
+    .map((layer) => {
+      const element = getLayerElement(layer);
+      return {
+        id: layer.id,
+        label: layer.name,
+        icon: element?.icon
+          ? typeof element.icon === "function"
+            ? element.icon({
+                children: [],
+                properties: layer.properties as any,
+              })
+            : element.icon
+          : "box",
+        onChange: (name: string) => rename?.(layer.id, name),
+        children: getLayerItems(layer.children, rename),
+        data: layer,
+      };
+    });
 };
