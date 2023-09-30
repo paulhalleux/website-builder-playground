@@ -11,6 +11,7 @@ export function useStoreState<T>(key: string, defaultValue: T) {
       const result =
         newValue instanceof Function ? newValue(prevValue) : newValue;
       localStorage.setItem(key, JSON.stringify(result));
+      window.dispatchEvent(new Event("storage"));
       return result;
     });
   };

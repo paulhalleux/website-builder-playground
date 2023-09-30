@@ -3,8 +3,10 @@ import React from "react";
 import { IconProps } from "../components";
 
 import { PropertyDefinition } from "./property";
+import { Page } from "./website";
 
 export type ElementProps<T, P = {}> = {
+  isEditing: boolean;
   properties: T;
   children: React.ReactNode;
 } & P;
@@ -15,8 +17,11 @@ export type ElementProperties<T> = {
 
 export type Element<T> = {
   name: string;
+  displayName: string;
+  icon?: ((properties: T | undefined) => IconProps["name"]) | IconProps["name"];
+  target: "workspace" | "layer" | "both";
+  applicable?: (page: Page) => boolean;
   acceptChildren: boolean | string[];
   component: React.FC<ElementProps<T>>;
-  icon?: ((props: ElementProps<T>) => IconProps["name"]) | IconProps["name"];
   properties: ElementProperties<T>;
 };

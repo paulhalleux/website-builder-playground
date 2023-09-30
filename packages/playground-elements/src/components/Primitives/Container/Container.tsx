@@ -53,9 +53,11 @@ export function Container({ children, properties }: ContainerProps) {
 
 export const ContainerElement: Element<ContainerElementProperties> = {
   name: ElementType.Container,
+  displayName: "Container",
+  target: "both",
+  icon: "layers",
   acceptChildren: true,
   component: Container,
-  icon: "layers",
   properties: {
     backgroundColor: {
       label: "Background color",

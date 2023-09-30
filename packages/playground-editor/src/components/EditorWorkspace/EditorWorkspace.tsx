@@ -4,6 +4,7 @@ import { useEditor } from "../../contexts";
 import { Toolbar } from "../Toolbar";
 
 import { RenderElement } from "./RenderElement";
+import { WorkspaceDropzone } from "./WorkspaceDropzone";
 
 import styles from "./EditorWorkspace.module.scss";
 
@@ -25,18 +26,23 @@ export function EditorWorkspace() {
     >
       <Toolbar />
       <div className={styles.page__container}>
-        <div className={styles.editor__workspace}>
-          {selectedPage?.layers
-            .sort((a, b) => a.order - b.order)
-            .map((layer) => (
-              <RenderElement
-                key={layer.id}
-                layer={layer}
-                dragOver={dragOver}
-                onDragOver={setDragOver}
-              />
-            ))}
-        </div>
+        {selectedPage && (
+          <div className={styles.editor__workspace}>
+            {selectedPage.layers.length === 0 && <WorkspaceDropzone empty />}
+            {selectedPage.layers
+              .sort((a, b) => a.order - b.order)
+              .map((layer, index) => (
+                <React.Fragment key={layer.id}>
+                  {index === 0 && <WorkspaceDropzone />}
+                  <RenderElement
+                    layer={layer}
+                    dragOver={dragOver}
+                    onDragOver={setDragOver}
+                  />
+                </React.Fragment>
+              ))}
+          </div>
+        )}
       </div>
     </div>
   );

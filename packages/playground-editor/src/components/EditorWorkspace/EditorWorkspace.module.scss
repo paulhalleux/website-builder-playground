@@ -64,22 +64,33 @@
   &:before {
     content: '';
     position: absolute;
-    top: -5px;
-    height: 10px;
+    top: -4px;
+    height: 8px;
     width: 100%;
     z-index: 1;
   }
 
-  &--active {
-    height: 40px;
-    background-color: var(--color-primary-alpha-dark);
-
-    &:before {
-      height: 50px;
-    }
+  &--active:before {
+      background-color: var(--color-primary-alpha-dark);
   }
 
   &--can-drop:before {
     pointer-events: all;
   }
+
+  &--empty {
+    height: 50px;
+    transition: none!important;
+
+    &:before {
+      height: 50px;
+    }
+  }
+}
+
+.not-found {
+  display: block;
+  padding: 12px;
+  background: #ffd1d1;
+  color: #8f0000;
 }

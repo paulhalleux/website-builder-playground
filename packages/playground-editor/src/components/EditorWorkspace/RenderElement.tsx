@@ -1,9 +1,10 @@
 import React from "react";
-import { Layer } from "@playground/common";
+import { ContextMenu, EditInline, Floating, Layer } from "@playground/common";
 import { Elements } from "@playground/elements";
 import { clsx } from "clsx";
 
 import { useEditor } from "../../contexts";
+import { useLayersActions } from "../../hooks/useLayersActions";
 
 import { useWorkspaceElementDrop } from "./useWorkspaceElementDrop";
 import { WorkspaceDropzone } from "./WorkspaceDropzone";
@@ -12,12 +13,14 @@ import styles from "./EditorWorkspace.module.scss";
 
 type RenderElementProps = {
   layer: Layer;
+  parent?: Layer;
   dragOver?: string;
   onDragOver: (id?: string) => void;
 };
 
 export function RenderElement({
   layer,
+  parent,
   dragOver,
   onDragOver,
 }: RenderElementProps) {
@@ -30,7 +33,9 @@ export function RenderElement({
     },
   } = useEditor();
 
-  const { drop, canDrop } = useWorkspaceElementDrop(layer);
+  const { removeLayer, updateLayer } = useLayersActions();
+
+  const { drop, canDrop, item } = useWorkspaceElementDrop(layer);
 
   const element = Object.values(Elements).find(
     (value) => value.name === layer.type,
@@ -38,7 +43,11 @@ export function RenderElement({
 
   const onClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     event.stopPropagation();
-    setSelectedLayer(layer.id);
+    if (event.ctrlKey && selectedLayerId === layer.id) {
+      setSelectedLayer(undefined);
+    } else {
+      setSelectedLayer(layer.id);
+    }
   };
 
   const onMouseOver = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -50,59 +59,89 @@ export function RenderElement({
     setHoveredLayer(undefined);
   };
 
-  const selected = layer.id === selectedLayerId;
   const isDragOver = dragOver === layer.id;
+  const selected = layer.id === selectedLayerId && !item;
 
   return (
     <>
-      <div
-        ref={drop}
-        onClick={onClick}
-        onMouseOver={onMouseOver}
-        onMouseOut={onMouseOut}
-        onDragEnter={(event) => {
-          event.stopPropagation();
-          onDragOver(layer.id);
-        }}
-        onDragExit={() => onDragOver(undefined)}
-        className={clsx(styles.editor__workspace__layer, {
-          [styles.selected]: selected && !isDragOver,
-          [styles.hovered]: layer.id === hoveredLayerId,
-          [styles.over]: isDragOver && canDrop,
-        })}
+      <Floating
+        closeOnContentClick
+        content={
+          <ContextMenu>
+            <ContextMenu.Item
+              id="select"
+              onSelect={() => setSelectedLayer(layer.id)}
+            >
+              Select {layer.name}
+            </ContextMenu.Item>
+            <ContextMenu.Item
+              id="delete"
+              onSelect={() => removeLayer(layer.id)}
+            >
+              Delete {layer.name}
+            </ContextMenu.Item>
+          </ContextMenu>
+        }
       >
-        {selected && (
-          <div className={styles.editor__workspace__layer__label}>
-            {layer.name}
-          </div>
-        )}
-        {element ? (
-          <element.component properties={layer.properties as any}>
-            {element.acceptChildren !== undefined &&
-              layer.children
-                .sort((a, b) => a.order - b.order)
-                .map((child) => {
-                  if (
-                    typeof element.acceptChildren !== "boolean" &&
-                    !element.acceptChildren.includes(child.type)
-                  )
-                    return null;
+        <div
+          ref={drop}
+          onClick={onClick}
+          onMouseOver={onMouseOver}
+          onMouseOut={onMouseOut}
+          onDrop={() => onDragOver(undefined)}
+          onDragEnd={() => onDragOver(undefined)}
+          onDragExit={() => onDragOver(undefined)}
+          onDragEnter={(event) => {
+            canDrop && event.stopPropagation();
+            onDragOver(layer.id);
+          }}
+          className={clsx(styles.editor__workspace__layer, {
+            [styles.over]: isDragOver && canDrop,
+            [styles.hovered]: layer.id === hoveredLayerId,
+            [styles.selected]: selected,
+          })}
+        >
+          {selected && (
+            <div className={styles.editor__workspace__layer__label}>
+              <EditInline
+                value={layer.name}
+                onChange={(value) => updateLayer(layer.id, { name: value })}
+              />
+            </div>
+          )}
+          {element ? (
+            <element.component isEditing properties={layer.properties as any}>
+              {element.acceptChildren !== undefined && (
+                <>
+                  <WorkspaceDropzone layer={layer} before />
+                  {layer.children
+                    .sort((a, b) => a.order - b.order)
+                    .map((child) => {
+                      if (
+                        typeof element.acceptChildren !== "boolean" &&
+                        !element.acceptChildren.includes(child.type)
+                      )
+                        return null;
 
-                  return (
-                    <RenderElement
-                      key={child.id}
-                      layer={child}
-                      dragOver={dragOver}
-                      onDragOver={onDragOver}
-                    />
-                  );
-                })}
-          </element.component>
-        ) : (
-          <span>{layer.type} not found</span>
-        )}
-      </div>
-      <WorkspaceDropzone />
+                      return (
+                        <RenderElement
+                          key={child.id}
+                          parent={layer}
+                          layer={child}
+                          dragOver={dragOver}
+                          onDragOver={onDragOver}
+                        />
+                      );
+                    })}
+                </>
+              )}
+            </element.component>
+          ) : (
+            <span className={styles["not-found"]}>{layer.type} not found</span>
+          )}
+        </div>
+      </Floating>
+      <WorkspaceDropzone layer={parent} />
     </>
   );
 }

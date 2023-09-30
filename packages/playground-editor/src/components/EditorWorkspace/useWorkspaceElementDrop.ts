@@ -8,16 +8,22 @@ import { getLayerElement } from "../../utils/layers";
 export function useWorkspaceElementDrop(layer: Layer) {
   const { addLayer } = useLayersActions();
 
-  const [{ canDrop, isOver }, drop] = useDrop(() => ({
+  const [{ canDrop, isOver, item }, drop] = useDrop(() => ({
     accept: DragItemType.Component,
     canDrop: (item: DragItem<Element<any>>) => {
+      const acceptTarget = ["layer", "both"].includes(item.item.target);
       const elementDefinition = getLayerElement(layer);
       if (!elementDefinition) return false;
-      return typeof elementDefinition.acceptChildren === "boolean"
-        ? elementDefinition.acceptChildren
-        : elementDefinition.acceptChildren.includes(item.item.name);
+      return (
+        acceptTarget &&
+        (typeof elementDefinition.acceptChildren === "boolean"
+          ? elementDefinition.acceptChildren
+          : elementDefinition.acceptChildren.includes(item.item.name))
+      );
     },
-    drop: (item: DragItem<Element<any>>) => {
+    drop: (item: DragItem<Element<any>>, monitor) => {
+      if (monitor.didDrop()) return;
+
       addLayer(
         {
           name: "New Layer",
@@ -33,8 +39,9 @@ export function useWorkspaceElementDrop(layer: Layer) {
     collect: (monitor) => ({
       isOver: monitor.isOver(),
       canDrop: monitor.canDrop(),
+      item: monitor.getItem(),
     }),
   }));
 
-  return { canDrop, isOver, drop };
+  return { canDrop, isOver, item, drop };
 }

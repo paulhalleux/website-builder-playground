@@ -67,10 +67,7 @@ const getLayerItems = (
         label: layer.name,
         icon: element?.icon
           ? typeof element.icon === "function"
-            ? element.icon({
-                children: [],
-                properties: layer.properties as any,
-              })
+            ? element.icon(layer.properties as any)
             : element.icon
           : "box",
         onChange: (name: string) => rename?.(layer.id, name),

@@ -27,7 +27,13 @@ export function Editor({ plugins }: EditorProps) {
           <header className={styles.editor__toolbar}>
             <Logo />
             <div className={styles.editor__toolbar__actions}>
-              <Button.Icon icon="play-circle" size="x-large" />
+              <Button.Icon
+                icon="play-circle"
+                size="x-large"
+                onClick={() => {
+                  window.open("/preview", "_blank");
+                }}
+              />
               <Button.Icon icon="download" size="x-large" />
               <Button>Export</Button>
             </div>
