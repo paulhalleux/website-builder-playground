@@ -45,7 +45,7 @@ export function RenderElement({
     event.stopPropagation();
     if (event.ctrlKey && selectedLayerId === layer.id) {
       setSelectedLayer(undefined);
-    } else {
+    } else if (selectedLayerId !== layer.id) {
       setSelectedLayer(layer.id);
     }
   };
@@ -57,6 +57,15 @@ export function RenderElement({
 
   const onMouseOut = () => {
     setHoveredLayer(undefined);
+  };
+
+  const onPropertyChange = (name: string, value: any) => {
+    updateLayer(layer.id, {
+      properties: {
+        ...layer.properties,
+        [name]: value,
+      },
+    });
   };
 
   const isDragOver = dragOver === layer.id;
@@ -110,10 +119,16 @@ export function RenderElement({
             </div>
           )}
           {element ? (
-            <element.component isEditing properties={layer.properties as any}>
+            <element.component
+              isEditing
+              properties={layer.properties as any}
+              onPropertyChange={onPropertyChange}
+            >
               {element.acceptChildren !== undefined && (
                 <>
-                  <WorkspaceDropzone layer={layer} before />
+                  {layer.children.length > 0 && (
+                    <WorkspaceDropzone layer={layer} before />
+                  )}
                   {layer.children
                     .sort((a, b) => a.order - b.order)
                     .map((child) => {

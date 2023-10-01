@@ -7,8 +7,8 @@ import { Button, Plugin, PluginPosition } from "@playground/common";
 
 import { Provider } from "../../contexts";
 import { defaultPlugins } from "../../plugins";
-import { DraggableComponent } from "../../plugins/ComponentsPlugin/DraggableComponent";
 import { DragItemType } from "../../types/dnd";
+import { DraggableComponent } from "../DraggableComponent";
 import { Header } from "../Header";
 import { EditorWorkspace, PluginsSidebar } from "../";
 

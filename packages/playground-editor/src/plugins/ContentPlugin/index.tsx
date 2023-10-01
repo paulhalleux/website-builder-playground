@@ -2,6 +2,7 @@ import { EditorPlugin, PluginPosition } from "@playground/common";
 
 import { LayersSection } from "./LayersSection";
 import { PagesSection } from "./PagesSection";
+import { PrimitiveComponents } from "./PrimitiveComponents";
 
 export const ContentPlugin: EditorPlugin = {
   id: "content-plugin",
@@ -16,5 +17,6 @@ export const ContentPlugin: EditorPlugin = {
       titleActions: PagesSection.Actions,
     },
     { id: "layers", title: "Layers", render: LayersSection },
+    { id: "elements", title: "Elements", render: PrimitiveComponents },
   ],
 };

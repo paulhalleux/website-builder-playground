@@ -1,10 +1,5 @@
 .property  {
   padding: 8px 12px;
-  border-bottom: 1px solid var(--color-border-light);
-
-  &:first-child {
-    border-top: 1px solid var(--color-border-light);
-  }
 }
 
 .properties {

@@ -1,5 +1,11 @@
 import { Link } from "react-router-dom";
-import { Button, useStoreState, Website } from "@playground/common";
+import {
+  Button,
+  ContextMenu,
+  Floating,
+  useStoreState,
+  Website,
+} from "@playground/common";
 
 import { Header } from "../Header";
 
@@ -22,28 +28,50 @@ export function Home() {
     ]);
   };
 
+  const onDeleteProject = (id: string) => {
+    setProjects((projects) => projects.filter((project) => project.id !== id));
+  };
+
   return (
     <div className={styles.home}>
-      <Header />
+      <Header>
+        <Button onClick={onAddProject}>Add project</Button>
+      </Header>
       <div className={styles.content}>
         <h1 className={styles.content__title}>Projects</h1>
         <div className={styles.projects}>
           {projects.map((project) => (
-            <Link
+            <Floating
+              closeOnContentClick
               key={project.id}
-              to={`/workspace/${project.id}`}
-              className={styles.project__link}
+              content={
+                <ContextMenu>
+                  <ContextMenu.Item
+                    id="delete"
+                    onSelect={() => onDeleteProject(project.id)}
+                  >
+                    Delete
+                  </ContextMenu.Item>
+                  <ContextMenu.Item id="edit" onSelect={() => {}}>
+                    Edit
+                  </ContextMenu.Item>
+                </ContextMenu>
+              }
             >
-              <article className={styles.project}>
-                <div className={styles.project__image} />
-                <section>
-                  <h4 className={styles.project__name}>{project.name}</h4>
-                </section>
-              </article>
-            </Link>
+              <Link
+                to={`/workspace/${project.id}`}
+                className={styles.project__link}
+              >
+                <article className={styles.project}>
+                  <div className={styles.project__image} />
+                  <section>
+                    <h4 className={styles.project__name}>{project.name}</h4>
+                  </section>
+                </article>
+              </Link>
+            </Floating>
           ))}
         </div>
-        <Button onClick={onAddProject}>Add project</Button>
       </div>
     </div>
   );

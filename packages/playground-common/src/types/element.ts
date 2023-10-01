@@ -9,6 +9,7 @@ export type ElementProps<T, P = {}> = {
   isEditing: boolean;
   properties: T;
   children: React.ReactNode;
+  onPropertyChange?: (property: keyof T, value: T[keyof T]) => void;
 } & P;
 
 export type Element<T> = {
@@ -19,5 +20,5 @@ export type Element<T> = {
   applicable?: (page: Page) => boolean;
   acceptChildren: boolean | string[];
   component: React.FC<ElementProps<T>>;
-  properties: PropertyDefinition<T[keyof T]>[];
+  properties: PropertyDefinition[];
 };

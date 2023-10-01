@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { Element, Icon, IconProps, mergeRefs } from "@playground/common";
 import { clsx } from "clsx";
 
-import { PreviewProps } from "../../../types/dnd";
+import { PreviewProps } from "../../types/dnd";
 
 import { useComponentDrag } from "./useComponentDrag";
 

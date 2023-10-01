@@ -1,7 +1,7 @@
 import { EditorPluginSectionProps } from "@playground/common";
 import { PrimitivesElements } from "@playground/elements";
 
-import { DraggableComponent } from "../DraggableComponent";
+import { DraggableComponent } from "../../../components/DraggableComponent";
 
 import styles from "./PrimitiveComponents.module.scss";
 

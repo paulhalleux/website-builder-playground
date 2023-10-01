@@ -118,5 +118,35 @@ export function updateLayer(
 }
 
 export function getLayerElement(layer: Layer) {
-  return Object.values(Elements).find((element) => element.name === layer.type);
+  return getLayerElementByType(layer.type);
+}
+
+export function getLayerElementByType(type: string) {
+  return Object.values(Elements).find((element) => element.name === type);
+}
+
+export function createDefaultLayer(
+  init: Partial<Layer> & Pick<Layer, "type">,
+): Layer {
+  const element = getLayerElementByType(init.type);
+
+  if (!element) {
+    throw new Error(`Cannot find element with type ${init.type}`);
+  }
+
+  const defaultProperties: any = {};
+
+  for (const property of element.properties) {
+    if (!property.defaultValue) continue;
+    defaultProperties[property.name] = property.defaultValue;
+  }
+
+  return {
+    id: crypto.randomUUID(),
+    name: "New layer",
+    children: [],
+    properties: defaultProperties,
+    order: 0,
+    ...init,
+  };
 }

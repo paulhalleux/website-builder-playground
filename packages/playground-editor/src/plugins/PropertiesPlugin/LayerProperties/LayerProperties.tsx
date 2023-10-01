@@ -26,34 +26,38 @@ export function LayerProperties({
 
   return (
     <Properties className={styles.properties}>
-      {selectedLayerElement.properties.map((propertyDefinition) => {
-        const PropertyComponent = getPropertyComponent(propertyDefinition.type);
+      {selectedLayerElement.properties
+        .filter((propertyDefinition) => !propertyDefinition.hidden)
+        .map((propertyDefinition) => {
+          const PropertyComponent = getPropertyComponent(
+            propertyDefinition.type,
+          );
 
-        if (!PropertyComponent) {
-          return null;
-        }
+          if (!PropertyComponent) {
+            return null;
+          }
 
-        return (
-          <div className={styles.property} key={propertyDefinition.name}>
-            <PropertyComponent
-              name={propertyDefinition.name}
-              value={
-                (selectedLayer.properties[propertyDefinition.name] ||
-                  propertyDefinition.defaultValue) as never
-              }
-              onChange={(value) => {
-                updateLayer(selectedLayer.id, {
-                  properties: {
-                    ...selectedLayer.properties,
-                    [propertyDefinition.name]: value,
-                  },
-                });
-              }}
-              definition={propertyDefinition as any}
-            />
-          </div>
-        );
-      })}
+          return (
+            <div className={styles.property} key={propertyDefinition.name}>
+              <PropertyComponent
+                name={propertyDefinition.name}
+                value={
+                  (selectedLayer.properties[propertyDefinition.name] ||
+                    propertyDefinition.defaultValue) as never
+                }
+                onChange={(value) => {
+                  updateLayer(selectedLayer.id, {
+                    properties: {
+                      ...selectedLayer.properties,
+                      [propertyDefinition.name]: value,
+                    },
+                  });
+                }}
+                definition={propertyDefinition as any}
+              />
+            </div>
+          );
+        })}
     </Properties>
   );
 }

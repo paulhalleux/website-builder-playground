@@ -39,18 +39,25 @@ export function LayersSection({ editor }: EditorPluginSectionProps) {
   }, [editor.selection.selectedPage?.layers]);
 
   return (
-    <ElementTree
-      items={items}
-      selected={editor.selection.selectedLayerId}
-      onSelect={editor.selection.setSelectedLayer}
-      onMouseOut={onMouseOut}
-      onMouseOver={onMouseOver}
-      contextMenu={(item) => (
-        <ContextMenu onItemSelect={(id) => onItemSelect(id, item.data)}>
-          <ContextMenu.Item id="delete-layer">Delete</ContextMenu.Item>
-        </ContextMenu>
-      )}
-    />
+    <div
+      style={{
+        maxHeight: "300px",
+        overflowY: "auto",
+      }}
+    >
+      <ElementTree
+        items={items}
+        selected={editor.selection.selectedLayerId}
+        onSelect={editor.selection.setSelectedLayer}
+        onMouseOut={onMouseOut}
+        onMouseOver={onMouseOver}
+        contextMenu={(item) => (
+          <ContextMenu onItemSelect={(id) => onItemSelect(id, item.data)}>
+            <ContextMenu.Item id="delete-layer">Delete</ContextMenu.Item>
+          </ContextMenu>
+        )}
+      />
+    </div>
   );
 }
 

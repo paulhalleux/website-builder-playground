@@ -1,12 +1,14 @@
 import { useDrop } from "react-dnd";
 import { Element, Layer } from "@playground/common";
 
+import { useEditor } from "../../contexts";
 import { useLayersActions } from "../../hooks/useLayersActions";
 import { DragItem, DragItemType } from "../../types/dnd";
-import { getLayerElement } from "../../utils/layers";
+import { createDefaultLayer, getLayerElement } from "../../utils/layers";
 
 export function useWorkspaceElementDrop(layer: Layer) {
   const { addLayer } = useLayersActions();
+  const { selection } = useEditor();
 
   const [{ canDrop, isOver, item }, drop] = useDrop(() => ({
     accept: DragItemType.Component,
@@ -24,17 +26,12 @@ export function useWorkspaceElementDrop(layer: Layer) {
     drop: (item: DragItem<Element<any>>, monitor) => {
       if (monitor.didDrop()) return;
 
-      addLayer(
-        {
-          name: "New Layer",
-          type: item.item.name,
-          order: 0,
-          id: crypto.randomUUID(),
-          properties: {},
-          children: [],
-        },
-        layer.id,
-      );
+      const newLayer = createDefaultLayer({
+        type: item.item.name,
+        order: layer.order + 1,
+      });
+      addLayer(newLayer, layer.id);
+      selection.setSelectedLayer(newLayer.id);
     },
     collect: (monitor) => ({
       isOver: monitor.isOver(),

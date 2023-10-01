@@ -17,12 +17,15 @@ type ContainerElementProperties = {
   display: Display;
 };
 
-type ContainerProps = ElementProps<
+type ContainerElementComponentProps = ElementProps<
   ContainerElementProperties,
   PropsWithChildren
 >;
 
-export function Container({ children, properties }: ContainerProps) {
+export function ContainerElementComponent({
+  children,
+  properties,
+}: ContainerElementComponentProps) {
   const displayProperties =
     properties.display?.type === "flex"
       ? {
@@ -57,7 +60,7 @@ export const ContainerElement: Element<ContainerElementProperties> = {
   target: "both",
   icon: "layers",
   acceptChildren: true,
-  component: Container,
+  component: ContainerElementComponent,
   properties: [
     {
       name: "backgroundColor",

@@ -3,11 +3,13 @@ import { Element, ElementProps, findLayer } from "@playground/common";
 
 import { ElementType } from "../../../types";
 
-import styles from "./LayoutContent.module.scss";
+import styles from "./LayoutContentElement.module.scss";
 
-type LayoutContentProps = ElementProps<{}>;
+type LayoutContentElementComponentProps = ElementProps<{}>;
 
-export function LayoutContent({ isEditing }: LayoutContentProps) {
+export function LayoutContentElementComponent({
+  isEditing,
+}: LayoutContentElementComponentProps) {
   return isEditing ? <div className={styles["layout-content"]} /> : <Outlet />;
 }
 
@@ -23,6 +25,6 @@ export const LayoutContentElement: Element<{}> = {
       page.layers,
       (layer) => layer.type === ElementType.LayoutContent,
     ),
-  component: LayoutContent,
+  component: LayoutContentElementComponent,
   properties: [],
 };
